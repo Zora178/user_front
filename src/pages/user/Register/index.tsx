@@ -2,7 +2,7 @@ import Footer from '@/components/Footer';
 import {register} from '@/services/ant-design-pro/api';
 import {LockOutlined, UserOutlined,} from '@ant-design/icons';
 import {LoginForm, ProFormText,} from '@ant-design/pro-components';
-import {Button, message, Tabs} from 'antd';
+import {message, Tabs} from 'antd';
 import React, {useState} from 'react';
 import {history} from 'umi';
 import styles from './index.less';
@@ -25,7 +25,7 @@ const Register: React.FC = () => {
 
       const id = await register(values);
 
-      if (id >= 0) {
+      if (id) {
         const defaultLoginSuccessMessage = '注册成功！';
         message.success(defaultLoginSuccessMessage);
 
@@ -35,13 +35,10 @@ const Register: React.FC = () => {
         history.push({
           pathname: '/user/login',
           query,
-
         });
         return;
-      } else {
-        throw new Error(`register error id = ${id}`)
       }
-    } catch (error) {
+    } catch (error: any) {
       const defaultLoginFailureMessage = '注册失败，请重试！';
       message.error(defaultLoginFailureMessage);
     }
@@ -120,6 +117,20 @@ const Register: React.FC = () => {
                     min: 8,
                     type: "string",
                     message: '长度不能小于8',
+                  },
+                ]}
+              />
+              <ProFormText
+                name="planetCode"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined className={styles.prefixIcon}/>,
+                }}
+                placeholder={'请输入星球编号'}
+                rules={[
+                  {
+                    required: true,
+                    message: '星球编号是必填项！',
                   },
                 ]}
               />
